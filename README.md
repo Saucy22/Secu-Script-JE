@@ -1,14 +1,14 @@
 # Secu-Script-JE
 Version 1.0-JE
 
-1. Purpose of Secu-Script
+# Purpose of Secu-Script
 Many advanced and novice users alike download scripts off of the internet to use on linux; the issue with this is that not many people look over the script before using it.
 That is what Secu-Script is for.
     
-1a. Purpose of Secu-Script JE
+# Why JE?
 Secuscript JE is the next step in the evolution of secuscript. It's built with Java 21, allowing for much faster file scan time on larger files.
 
-1b. Prerequisites
+# Prerequisites
 In order to use this program you must have a java runtime environment installed. This can be any version 21 and onwards (openjdk 25 recommended)
 
 For Ubuntu based distributions you can use:
@@ -18,7 +18,7 @@ For rpm (Fedora) based distributions you can use:
 And for Arch based distributions you can use:
 	sudo pacman -S jre-openjdk
 
-2. Installation (WARNING: THIS REQUIRES SUDO ACCESS!)
+# Installation (WARNING: THIS REQUIRES SUDO ACCESS!)
 
 Extract the zip file you downloaded (hopefully from github).
 
@@ -29,26 +29,26 @@ Execute installer.sh
 	./installer.sh
 Done!
 
-3. Usage
+# Usage
 
-    After installing Secu-Script you can run it from any directory by using the command 'secuscript'
+After installing Secu-Script you can run it from any directory by using the command 'secuscript'
 
-    Here is the most basic use of Secu-Script
+Here is the most basic use of Secu-Script
 
         secuscript /path/to/file
 
-    replace the path with the RELATIVE path to the script you want to run.
+replace the path with the RELATIVE path to the script you want to run.
 
-    There are currently 3 flags you can use as arguments
+There are currently 3 flags you can use as arguments
 
-        -U: Unsafe mode. Allows you to run scripts that contain destructive commands or malicious URLS it is NOT RECOMMENDED to use this mode FOR ANY REASON WHATSOEVER
-        -O: Offline mode. Disables URL checking. It is NOT RECOMMENDED to use this option unless for some reason you cannot connect to the internet.
-        -h: shows you the help screen.
+-U: Unsafe mode. Allows you to run scripts that contain destructive commands or malicious URLS it is NOT RECOMMENDED to use this mode FOR ANY REASON WHATSOEVER
+-O: Offline mode. Disables URL checking. It is NOT RECOMMENDED to use this option unless for some reason you cannot connect to the internet.
+-h: shows you the help screen.
 
-    There are currently 2 compatible filetypes you can use with this program.
+There are currently 2 compatible filetypes you can use with this program.
 
-        .sh Shell Scripts
-        .py Python Files (see section 3a)
+.sh Shell Scripts
+.py Python Files (see section 3a)
 
 
 3a. Changelog (1.0-JE compared to 1.0-SECOND)
