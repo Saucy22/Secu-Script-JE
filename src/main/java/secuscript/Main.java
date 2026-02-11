@@ -18,7 +18,7 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		
 		//Boolean Declarations
-		boolean debugMode = false;
+		boolean debugMode = true;
 		boolean offlineMode = false;
 		boolean unsafeMode = false;
 
@@ -27,6 +27,7 @@ public class Main {
 		int sDetections = 0;
 		int urlDetections = 0;
 		int sudo = 0;
+		int packageChanges = 0;
 		
 		//List Declarations
 		List<String> commandsDetected = new ArrayList<>(List.of());;
@@ -34,18 +35,20 @@ public class Main {
 		
 		//Array Declarations
 		final String[] destructiveCommands = {"rm -rf", ":(){ :|:& };:","sudo chmod -R 777 /", "sudo rm -rf"};
-		final String[] suspiciousCommands = {"|sh", "|bash", "curl", "wget", "os.system(","sudo", "doas", "py_compile","browser_history","browser_cookie3"};
+		final String[] suspiciousCommands = {"|sh", "|bash", "curl", "wget", "os.system(","sudo", 
+				"doas", "py_compile","browser_history","browser_cookie3","requests.put(", "pacman -", "apt", "dnf",
+				"yay -", "snap", "flatpak"};
 		
 		//String Declarations
 		String fileName;
-		String version = "1.0-JE";
+		String version = "1.1-JE";
 		
 		//Debug Mode Handler
-		if (debugMode == true) {
+		if (debugMode == false) {
 			System.out.println("DEBUG MODE ACTIVE, USER INPUT IGNORED.");
 			unsafeMode = false;
-			offlineMode = false;
-			fileName = "/home/caleb/Downloads/python.py";
+			offlineMode = true;
+			fileName = "/home/caleb/Downloads/shell.sh";
 		//Normal Mode.
 		} else {
 			for (int i = 0; i < args.length; i++) {
@@ -61,7 +64,14 @@ public class Main {
 						
 				}
 			}
-			fileName = args[0];
+			try {
+				fileName = args[0];
+			}
+			catch (Exception ArrayIndexOutOfBoundsException) {
+				fileName = "nothing";
+				System.out.println("No filename specified, run 'secuscript -h' for help using this program.");
+				System.exit(0);
+			}
 			if (fileName.contains(".sh") || fileName.contains(".py")) {
 				
 			} else if (fileName.equals("-h")) {
@@ -96,6 +106,10 @@ public class Main {
 						if (suspiciousCommands[x].equals("sudo") || suspiciousCommands[x].equals("doas")) {
 							sDetections--;
 							sudo++;
+						} else if (suspiciousCommands[x].equals("apt") || suspiciousCommands[x].equals("dnf") || suspiciousCommands[x].equals("pacman -") 
+								|| suspiciousCommands[x].equals("yay -") || suspiciousCommands[x].equals("snap") || suspiciousCommands[x].equals("flatpak") ) {
+							sDetections--;
+							packageChanges++;
 						} else {
 							commandsDetected.add(suspiciousCommands[x]);
 						}
@@ -119,14 +133,15 @@ public class Main {
 
 			}
 			//Scan loop ends, judgment begins.
-			System.out.println(dDetections + " Destructive Commands Found.");
-			System.out.println(sDetections + " Suspicious Commands Found.");
+			System.out.println(dDetections + " Destructive commands found.");
+			System.out.println(sDetections + " Suspicious commands found.");
+			System.out.println(packageChanges + " Potential package manager calls found.");
 			if (offlineMode) {
 				System.out.println("Url checking disabled");
 			} else {
-				System.out.println(urlDetections + " Malicious URLS Found");
+				System.out.println(urlDetections + " Malicious URLS found.");
 			}
-			System.out.println("And " + sudo + " calls to Sudo/Doas");
+			System.out.println("And " + sudo + " calls to Sudo/Doas.");
 			if (sDetections > 0 || dDetections > 0) {
 				System.out.println("Commands flagged: " + commandsDetected.toString());
 			}
@@ -168,7 +183,10 @@ public class Main {
 			}
 			if (sDetections > 0 || sudo > 0) {
 				if (sudo > 0) {
-					System.out.println("THIS SCRIPT REQUIRES ROOT ACCESS");
+					System.out.println("THIS SCRIPT REQUIRES ROOT ACCESS.");
+				}
+				if (packageChanges > 0) {
+					System.out.println("THIS SCRIPT MAY INSTALL AND/OR REMOVE PACKAGES.");
 				}
 				System.out.println("This script may make (un)wanted changes to your system. Would you like to proceed? [N/y]");
 				String answer = userInput.nextLine().toLowerCase();
