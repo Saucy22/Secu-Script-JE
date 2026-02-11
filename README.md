@@ -1,12 +1,12 @@
 # Secu-Script-JE
-Version 1.0-JE
+Version 1.1-JE
 
 # Purpose of Secu-Script
 Many advanced and novice users alike download scripts off of the internet to use on linux; the issue with this is that not many people look over the script before using it.
 That is what Secu-Script is for.
     
 # Why JE?
-Secuscript JE is the next step in the evolution of secuscript. It's built with Java 21, allowing for much faster file scan time on larger files.
+Secuscript JE is the next step in the evolution of secuscript. It's built with Java 25, allowing for much faster file scan time on larger files.
 
 # Prerequisites
 In order to use this program you must have a java runtime environment installed. This can be any version 21 and onwards (openjdk 25 recommended)
@@ -29,9 +29,9 @@ And for Arch based distributions you can use:
 
 Extract the zip file you downloaded (hopefully from github).
 
-Change directory into the "SecuScriptJE1" folder (as of Java Edition Version 1)
+Change directory into the "SecuScriptJE1.1" folder (as of Java Edition Version 1.1)
 
-	cd /path/to/SecuScriptJE1
+	cd /path/to/SecuScriptJE1.1
 	
 Execute installer.sh
 
@@ -67,20 +67,17 @@ There are currently 2 compatible filetypes you can use with this program.
 
 
 
-# Changelog (1.0-JE compared to 1.0-SECOND)
+# Changelog (1.1-JE compared to 1.0-JE)
 
-- Switched the codebase from python to java.
-  
-- The program now shows you which commands triggered detection. (sin sudo and doas which have their own counter already)
-  
-- Improved performance by a large margin.
-  
-- Improved security.
+- Improved Python scanning capability
+- Fixed an unhandled exception
+- Added package manager detection
+- Improved performance in offline mode
 
-# Limitations (as of verison 1.0-JE)
+# Limitations (as of verison 1.1-JE)
 
 - There is no way to pass parameters to the script you want to run. This functionality is planned for a future release
 - This program can only read scripts encoded in utf-8.
-- Python script scanning is more of an afterthought than a feature, more work must be done.
+- Python script scanning is more of an afterthought than a feature, more work must be done. (15% progress on this)
     
     
