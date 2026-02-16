@@ -18,9 +18,12 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		
 		//Boolean Declarations
-		boolean debugMode = true;
-		boolean offlineMode = false;
-		boolean unsafeMode = false;
+		boolean notDebugMode = true;
+		
+		//Flag-activated modes
+		boolean offlineMode = false;  //-O
+		boolean unsafeMode = false;  //-U
+		boolean dontRun = false;  //-Dr
 
 		//Integer Declarations
 		int dDetections = 0;
@@ -41,13 +44,14 @@ public class Main {
 		
 		//String Declarations
 		String fileName;
-		String version = "1.1-JE";
+		String version = "1.1.5-JE";
 		
 		//Debug Mode Handler
-		if (debugMode == false) {
+		if (notDebugMode == false) {
 			System.out.println("DEBUG MODE ACTIVE, USER INPUT IGNORED.");
 			unsafeMode = false;
 			offlineMode = true;
+			dontRun = true;
 			fileName = "/home/caleb/Downloads/shell.sh";
 		//Normal Mode.
 		} else {
@@ -61,7 +65,10 @@ public class Main {
 						if (! (i <= 0)) {
 							offlineMode = true;
 						}
-						
+					case "-Dr":
+						if (! (i <= 0)) {
+							dontRun = true;
+						}
 				}
 			}
 			try {
@@ -76,10 +83,11 @@ public class Main {
 				
 			} else if (fileName.equals("-h")) {
 				System.out.println("secuscript version " + version);
-				System.out.println("usage: secuscript [FILENAME] [-U (optional)] [-O (optional)]");
+				System.out.println("usage: secuscript [FILENAME] [-U (optional)] [-O (optional)] [-Dr (optional)]");
 				System.out.println("FILENAME: relative or absolute path of the script you want to scan, must be a .sh (shell) script or a .py (python) file.");
 				System.out.println("-U: unsafe mode, allows you to execute destructive scripts, NOT RECCOMENDED");
 				System.out.println("-O: offline mode, scans the script without checking for malicious URLs, NOT RECCOMENDED");
+				System.out.println("-Dr: don't run mode, exits the program immediatley after scanning. Reccomended for scanning scripts in high risk environments.");
 				System.exit(0);
 			} else if ( (! fileName.contains(".sh") && ! fileName.contains(".py")) ) {
 				System.out.println("File is not compatible with SecuScript, run 'secuscript -h' for more information.");
@@ -89,7 +97,7 @@ public class Main {
 		}
 		Path filePath = Path.of(fileName);
 		try {
-			String[] fileLines = Files.readString(filePath).split("\n");
+			String[] fileLines = Files.readString(filePath).split("\n"); //Line 100!
 			String[] badURLS = getURLDefinitions(offlineMode);
 			
 			//Scan loop start.
@@ -149,6 +157,13 @@ public class Main {
 				System.out.println("URLS Flagged: " + urlsDetected.toString());
 			}
 			
+			//Don't run mode.
+		
+			if (dontRun == true) {
+				System.out.println("[Dont Run] Script not run.");
+				System.exit(0);
+			}
+			
 			//Execution time
 			
 			Scanner userInput = new Scanner(System.in);
@@ -182,7 +197,7 @@ public class Main {
 				System.exit(0);
 			}
 			if (sDetections > 0 || sudo > 0) {
-				if (sudo > 0) {
+				if (sudo > 0) { //Line 200!
 					System.out.println("THIS SCRIPT REQUIRES ROOT ACCESS.");
 				}
 				if (packageChanges > 0) {
@@ -252,6 +267,7 @@ public class Main {
 	        HttpClient client = HttpClient.newHttpClient();
 	 
 	        HttpRequest request = HttpRequest.newBuilder()
+	        		//Definitions courtesy of hagezi
 	               .uri(URI.create("https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/domains/tif.txt"))
 	               .GET()
 	               .build();
